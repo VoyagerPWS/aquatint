@@ -91,7 +91,7 @@ main(int argc, char *argv[]) {
 
     // populate white black threshold image
     // input image ranges from black 0 to white 255 while output is white -1 and black +1
-    // (the pin pout pointers should be declaired in the for loop, but my c-foo is weak)
+    // (the pin pout pointers should be declared in the for loop, but my c-foo is weak)
     uint8_t *pin = img;
     int8_t *pout = bw;
     for (; pin != img + img_size; pin += channels, pout++) {
