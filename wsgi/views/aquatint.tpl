@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<!-- This is a bottle framework template.  See https://bottlepy.org/docs/dev/stpl.html
+% if 0:
+This is a bottle framework template.  See https://bottlepy.org/docs/dev/stpl.html
 The values in double curly braces are Python variables.  Lines beginning with percent are
-Python statements.  The following variable is set to the base of the wsgi bottle main
+Python statements.  The following variable, pre, is set to the base of the wsgi bottle main
 application file.  Running under Apache mod_wsgi, this will almost certainly be non-blank.
--->
+% end
 % pre = "/app" # in Apache mod_wsgi environment
 <!-- % pre = "" # in bottle development environment -->
 <HTML lang="en-us">
@@ -45,18 +46,18 @@ input.slider { height:15px;border-radius:5px;width:100%; }
 <input class="upload" type="file" id="file" name="file">
 </p>
 <p>
-<label for="greycut">greycut</label> = <output for="greycut" id="greycutValue">0.5</output>
-<input class="slider" type="range" min="0.1" max="0.9" step="0.1" value="0.5"
+<label for="greycut">greycut</label> = <output for="greycut" id="greycutValue">{{ g }}</output>
+<input class="slider" type="range" min="0.1" max="0.9" step="0.1" value="{{ g }}"
 id="greycut" name="greycut" oninput="greycutValue.value=greycut.value">
 </p>
 <p>
-<label for="temperature">temperature</label> = <output for="temperature" id="temperatureValue">5</output>
-<input class="slider" type="range" min="1.0" max="9.0" step="1.0" value="5.0"
+<label for="temperature">temperature</label> = <output for="temperature" id="temperatureValue">{{ t }}</output>
+<input class="slider" type="range" min="1.0" max="9.0" step="1.0" value="{{ t }}"
 id="temperature" name="temperature" oninput="temperatureValue.value=temperature.value">
 </p>
 <p>
-<label for="sweeps">sweeps</label> = <output for="sweeps" id="sweepsValue">2</output>
-<input class="slider" type="range" min="1" max="5" step="1" value="2"
+<label for="sweeps">sweeps</label> = <output for="sweeps" id="sweepsValue">{{ s }}</output>
+<input class="slider" type="range" min="1" max="9" step="1" value="{{ s }}"
 id="sweeps" name="sweeps" oninput="sweepsValue.value=sweeps.value">
 </p>
 <p>

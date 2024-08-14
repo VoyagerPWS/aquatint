@@ -28,7 +28,7 @@ scratch = "/space/tmp/uploads"
 # trivial test target http://localhost:8080/hello
 @route('/hello')
 def hello():
-    return "Hello from bottle!"
+    return "Hello from bottle number 1!"
 
 # aquatint things
 # be sure to set valid scratch variable above and aq_Proc below
@@ -55,37 +55,40 @@ def aquatintProc():
     if upload and upload.filename != "empty":
         # note that upload.filename is already sanitized
         aq_inImage = upload.filename
-        file_path = "{path}/{file}".format(path=aq_savePath, file=aq_inImage)
+        file_path = "{0}/{1}".format(aq_savePath, aq_inImage)
         # need to limit size and type of file here
         upload.save(file_path, overwrite=True)
     
     # get the form data (need to sanitize)
-    greycut = request.forms.get('greycut')
-    temperature = request.forms.get('temperature')
-    sweeps = request.forms.get('sweeps')
+    g = request.forms.get('greycut')
+    t = request.forms.get('temperature')
+    s = request.forms.get('sweeps')
     # process the file using compiled program
-    if len(aq_inImage) > 0:
-        cmd = "{0} {1} {2} {3} {4}".format(aq_Proc, aq_inImage, greycut, temperature, sweeps)
-        #print("cmd: {0}".format(cmd), file=sys.stderr)
+    if aq_inImage != "":
+        cmd = "{0} {1} {2} {3} {4}".format(aq_Proc, aq_inImage, g, t, s)
+        print("cmd: {0}".format(cmd), file=sys.stderr)
         os.chdir(aq_savePath)
         p = subprocess.run(cmd, shell=True, check=True, encoding='utf-8')
         os.chdir(os.path.dirname(__file__))
         aq_outImage = os.path.splitext(aq_inImage)[0]+"-aq.png"
 
-    #print("aq_inImage aq_outImage: {0} {1}".format(aq_inImage,aq_outImage), file=sys.stderr)
-    return template('aquatint', inImage=aq_inImage, outImage=aq_outImage)
+    print("aq_savePath aq_inImage aq_outImage: {0} {1} {2}".format(aq_savePath,aq_inImage,aq_outImage), file=sys.stderr)
+    if aq_inImage != "":
+        return template('aquatint', inImage=aq_inImage, outImage=aq_outImage, g=g, t=t, s=s)
+    else:
+        return "Processing has timed out.  You will have to begin again."
 
 
 @route('/aquatint', method='GET')
 def aquatintForm():
     global aq_inImage, aq_outImage, aq_userIP, aq_savePath, aq_Proc
-    return template('aquatint', inImage=aq_inImage, outImage=aq_outImage)
+    return template('aquatint', inImage="", outImage="", g="0.5", t="5", s="3")
 
 
 @route('/aquatint/images/<filename>')
 def aquatintImage(filename):
     global aq_inImage, aq_outImage, aq_userIP, aq_savePath, aq_Proc
-    #print("aq_savePath/filename {0}/{1}".format(aq_savePath,filename), file=sys.stderr)
+    print("fetching aq_savePath/filename {0}/{1}".format(aq_savePath,filename), file=sys.stderr)
     return static_file(filename, root=aq_savePath)
 
 

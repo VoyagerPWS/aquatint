@@ -22,7 +22,7 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.h"
 
-#define DEBUG
+#undef DEBUG
 
 char *myname;
 
@@ -37,6 +37,9 @@ usage () {
 
 int
 main(int argc, char *argv[]) {
+
+    int i, len;
+
     myname = argv[0];
     if (argc != 5) {
         usage();
@@ -71,7 +74,7 @@ main(int argc, char *argv[]) {
     double beta = 1.0 / temperature;
 
     int sweeps = atof(argv[4]);
-    if (sweeps < 1 || sweeps > 5) {
+    if (sweeps < 1 || sweeps > 9) {
         fprintf(stderr, "%s:  ERROR bad sweeps value %d\n", myname, sweeps);
         usage();
         exit(1);
@@ -99,14 +102,20 @@ main(int argc, char *argv[]) {
         *pout = gray >= threshold ? -1 : 1;
     }
 
-#ifdef DEBUG
+    // always save the bw greycut image
     // the white value -1 is automatically 255 as an unsigned value
     // but change the black value +1 to 0 for the image write
     for (int i=0; i<nsites; i++) if (bw[i] == 1) bw[i] = 0;
-    stbi_write_png("bw.png", width, height, 1, bw, width);
+    // build output file name from input file name
+    len = strlen(infile);
+    for (i=len; i>0; i--) if (infile[i] == '.') break;
+    if (i) len = i;
+    char outbw[len+7];
+    strncpy(outbw, infile, len);
+    strcpy(outbw+len, "-bw.png");
+    stbi_write_png(outbw, width, height, 1, bw, width);
     // then change white back to +1 again
-    for (int i=0; i<nsites; i++) if (bw[i] == 0) bw[i] = 1;
-#endif
+    for (i=0; i<nsites; i++) if (bw[i] == 0) bw[i] = 1;
 
     // init random number generator
     srand((unsigned int)time(NULL));
@@ -124,7 +133,7 @@ main(int argc, char *argv[]) {
     // sweeps
     for (int n=0; n<sweeps; n++) {
         // elements of Ising state array
-        for (int i=0; i<nsites; i++) {
+        for (i=0; i<nsites; i++) {
             // arbitrary x and y elements
             int x = rand() % width;
             int y = rand() % height;
@@ -146,21 +155,20 @@ main(int argc, char *argv[]) {
 
     // the white value -1 is automatically 255 as an unsigned value
     // but change the black value +1 to 0 for the image write
-    for (int i=0; i<nsites; i++) if (sig[i] == 1) sig[i] = 0;
+    for (i=0; i<nsites; i++) if (sig[i] == 1) sig[i] = 0;
     // build output file name from input file name
-    int len = strlen(infile);
-    int i;
+    len = strlen(infile);
     for (i=len; i>0; i--) if (infile[i] == '.') break;
     if (i) len = i;
-    char outfile[len+7];
-    strncpy(outfile, infile, len);
-    strcpy(outfile+len, "-aq.png");
+    char outaq[len+7];
+    strncpy(outaq, infile, len);
+    strcpy(outaq+len, "-aq.png");
 #ifdef DEBUG
-    fprintf(stderr, "%s:  INFO outfile: %s\n", myname, outfile);
+    fprintf(stderr, "%s:  INFO outaq: %s\n", myname, outaq);
 #endif
-    int success = stbi_write_png(outfile, width, height, 1, sig, width);
+    int success = stbi_write_png(outaq, width, height, 1, sig, width);
     if (! success) {
-        fprintf(stderr, "%s:  ERROR writing output aquatint image %s.\n", myname, outfile);
+        fprintf(stderr, "%s:  ERROR writing output aquatint image %s.\n", myname, outaq);
         exit(1);
     }
 
