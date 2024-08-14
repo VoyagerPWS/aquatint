@@ -32,7 +32,8 @@ a:visited { color:#FFDD33; }
 a:hover { color:#FFDD00; }
 a:active { color:#FFDD00; }
 p { margin-left:auto; margin-right:auto; max-width:40rem;line-height:1.5;}
-main {display:block;justify-content:center;margin-left:auto:margin-right:auto;max-width:40rem;}
+p.error { background-color:red; font-size:1.25em; }
+main {display:block;justify-content:center;margin-left:auto;margin-right:auto;max-width:40rem;}
 input.upload { width:100%; }
 input.slider { height:15px;border-radius:5px;width:100%; }
 </style>
@@ -40,19 +41,24 @@ input.slider { height:15px;border-radius:5px;width:100%; }
 <body>
 <main>
 <h1>Aquatint Image Processor</h1>
+% if e != "":
+<p class="error">
+{{ e }}
+</p>
+% end
 <form action="{{ pre }}/aquatint" method="post" enctype="multipart/form-data" accept-charset="utf-8">
 <p>
-<label for="file">Select image file to upload</label>
+<label for="file">Select image file to upload (limited to 2MB)</label>
 <input class="upload" type="file" id="file" name="file">
 </p>
 <p>
 <label for="greycut">greycut</label> = <output for="greycut" id="greycutValue">{{ g }}</output>
-<input class="slider" type="range" min="0.1" max="0.9" step="0.1" value="{{ g }}"
+<input class="slider" type="range" min="0.1" max="0.9" step="0.01" value="{{ g }}"
 id="greycut" name="greycut" oninput="greycutValue.value=greycut.value">
 </p>
 <p>
 <label for="temperature">temperature</label> = <output for="temperature" id="temperatureValue">{{ t }}</output>
-<input class="slider" type="range" min="1.0" max="9.0" step="1.0" value="{{ t }}"
+<input class="slider" type="range" min="1.0" max="9.0" step="0.1" value="{{ t }}"
 id="temperature" name="temperature" oninput="temperatureValue.value=temperature.value">
 </p>
 <p>
@@ -64,18 +70,22 @@ id="sweeps" name="sweeps" oninput="sweepsValue.value=sweeps.value">
 <input type="submit" value="Process Image">
 </p>
 </form>
-% if len(inImage) > 0:
-<p>
-Input image {{ inImage }}.
-</p>
-<img alt="input image" src="aquatint/images/{{ inImage }}">
-<br>
-<p>
-Processed image {{ outImage }}.  Right-click to save.
-</p>
-<img alt="output image" src="aquatint/images/{{ outImage }}">
-<br>
+% if im != "":
+<p>Right-click or control-click to save images.</p>
+<p>Aquatint image {{ aq }}.</p>
+<img alt="aquatint image" src="aquatint/images/{{ aq }}"><br>
+<p>Threshold image {{ bw }}.</p>
+<img alt="threshold image" src="aquatint/images/{{ bw }}"><br>
+<p>Input image {{ im }}.</p>
+<img alt="input image" src="aquatint/images/{{ im }}"><br>
 % end
+<p>
+This form applies an aquatint effect to an uploaded image using the Ising method
+of <a href="https://physics.uiowa.edu/people/yannick-meurice">Prof Yannick Meurice</a>
+described in <a href="https://doi.org/10.1119/10.0006525">"Making digital aquatint with
+the Ising model"</a>, and is inspired by the work of <a href=
+"https://alanmckay.blog/projects/aquatint/">Alan McKay</a>.
+</p>
 </main>
 </body>
 </html>
