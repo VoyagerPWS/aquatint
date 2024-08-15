@@ -59,7 +59,7 @@ def aquatintProc():
         file_path = "{0}/{1}".format(aq_savePath, aq_inImage)
         # limit file type and size here
         #print("upload content_type={0} content_length={1}".format(upload.content_type,upload.content_length), file=sys.stderr)
-        # this doesn't work because content_length is always -1
+        # this isn't sufficient because content_length is always -1
         if upload.content_type.startswith('image/') and upload.content_length < 3000001:
             upload.save(file_path, overwrite=True)
             size = os.path.getsize(file_path)
@@ -74,8 +74,7 @@ def aquatintProc():
             e = "Invalid file {0} type {1} size {2}.".format(aq_inImage, upload.content_type, size)
             aq_inImage = ""
 
-    # typically Content-Length isn't reliable, 
-    # get the form data (need to sanitize)
+    # get and sanitize the form data
     g = request.forms.get('greycut')
     t = request.forms.get('temperature')
     s = request.forms.get('sweeps')
@@ -91,10 +90,23 @@ def aquatintProc():
         cmd = "{0} {1} {2} {3} {4}".format(aq_Proc, aq_inImage, g, t, s)
         #print("cmd: {0}".format(cmd), file=sys.stderr)
         os.chdir(aq_savePath)
-        p = subprocess.run(cmd, shell=True, check=True, encoding='utf-8')
+        p = subprocess.run(
+            cmd,
+            shell = True,
+            stdout = subprocess.PIPE,
+            stderr = subprocess.PIPE,
+            universal_newlines = True,
+            encoding='utf-8'
+            )
         os.chdir(os.path.dirname(__file__))
-        aq = os.path.splitext(aq_inImage)[0]+"-aq.png"
-        bw = os.path.splitext(aq_inImage)[0]+"-bw.png"
+        if p.returncode:
+            e = p.stderr
+            aq_inImage = ""
+            aq = ""
+            bw = ""
+        else:
+            aq = os.path.splitext(aq_inImage)[0]+"-aq.png"
+            bw = os.path.splitext(aq_inImage)[0]+"-bw.png"
 
     #print("aq_savePath aq_inImage bw aq: {0} {1} {2} {3}".format(aq_savePath,aq_inImage,bw,aq), file=sys.stderr)
     if aq_inImage == "":

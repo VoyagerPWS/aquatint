@@ -35,9 +35,15 @@ p { margin-left:auto; margin-right:auto; max-width:40rem;line-height:1.5;}
 p.error { background-color:red; font-size:1.2em; padding:10px; border-radius:10px; text-shadow: 1px 1px black; }
 main {display:block;justify-content:center;margin-left:auto;margin-right:auto;max-width:40rem;}
 input[type="file"]::file-selector-button { background-color:#FFCD00; color:black; padding:10px; border-radius:10px; cursor:pointer; }
+input[type="file"]::file-selector-button:hover { background-color:#FFDE00; }
+input[type="file"]::file-selector-button:focus { background-color:#FFDE00; }
+input[type="file"]::file-selector-button:active { background-color:#FFFFFF; }
 input.upload { width:100%; }
 input.slider { height:20px; border-radius:10px; width:100%; cursor:pointer; }
 input.submit { cursor:pointer; background-color:#FFCD00; color:black; padding:10px; border-radius:10px; }
+input.submit:hover { background-color:#FFDE00; }
+input.submit:focus { background-color:#FFDE00; }
+input.submit:active { background-color:#FFFFFF; }
 </style>
 </head>
 <body>
