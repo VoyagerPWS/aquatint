@@ -34,8 +34,10 @@ a:active { color:#FFDD00; }
 p { margin-left:auto; margin-right:auto; max-width:40rem;line-height:1.5;}
 p.error { background-color:red; font-size:1.2em; padding:10px; border-radius:10px; text-shadow: 1px 1px black; }
 main {display:block;justify-content:center;margin-left:auto;margin-right:auto;max-width:40rem;}
+input[type="file"]::file-selector-button { background-color:#FFCD00; color:black; padding:10px; border-radius:10px; cursor:pointer; }
 input.upload { width:100%; }
-input.slider { height:15px;border-radius:5px;width:100%; }
+input.slider { height:20px; border-radius:10px; width:100%; cursor:pointer; }
+input.submit { cursor:pointer; background-color:#FFCD00; color:black; padding:10px; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -67,7 +69,7 @@ id="temperature" name="temperature" oninput="temperatureValue.value=temperature.
 id="sweeps" name="sweeps" oninput="sweepsValue.value=sweeps.value">
 </p>
 <p>
-<input type="submit" value="Process Image">
+<input class="submit" type="submit" value="Process Image">
 </p>
 </form>
 % if im != "":
