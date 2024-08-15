@@ -58,12 +58,23 @@ def aquatintProc():
         aq_inImage = upload.filename
         file_path = "{0}/{1}".format(aq_savePath, aq_inImage)
         # limit file type and size here
-        if upload.content_type.startswith('image/') and upload.content_length < 2000001:
+        #print("upload content_type={0} content_length={1}".format(upload.content_type,upload.content_length), file=sys.stderr)
+        # this doesn't work because content_length is always -1
+        if upload.content_type.startswith('image/') and upload.content_length < 3000001:
             upload.save(file_path, overwrite=True)
+            size = os.path.getsize(file_path)
+            if size > 3000000:
+                os.unlink(file_path)
+                e = "Invalid file {0} type {1} size {2} is too big.".format(aq_inImage, upload.content_type, size)
+                aq_inImage = ""
         else:
-            e = "Invalid file {0} type {1} size {2}".format(aq_inImage, upload.content_type, upload.content_length)
+            size = upload.content_length
+            if size == -1:
+                size = "unknown"
+            e = "Invalid file {0} type {1} size {2}.".format(aq_inImage, upload.content_type, size)
             aq_inImage = ""
-    
+
+    # typically Content-Length isn't reliable, 
     # get the form data (need to sanitize)
     g = request.forms.get('greycut')
     t = request.forms.get('temperature')
@@ -92,7 +103,8 @@ def aquatintProc():
         g  = 0.5
         t  = 5.0
         s  = 3
-        e  = "Processing has timed out.  You will have to begin again."
+        if e == "":
+            e  = "Processing has timed out.  You will have to begin again."
 
     return template('aquatint', im=aq_inImage, bw=bw, aq=aq, g=g, t=t, s=s, e=e)
 

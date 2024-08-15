@@ -32,7 +32,7 @@ a:visited { color:#FFDD33; }
 a:hover { color:#FFDD00; }
 a:active { color:#FFDD00; }
 p { margin-left:auto; margin-right:auto; max-width:40rem;line-height:1.5;}
-p.error { background-color:red; font-size:1.25em; }
+p.error { background-color:red; font-size:1.2em; padding:10px; border-radius:10px; text-shadow: 1px 1px black; }
 main {display:block;justify-content:center;margin-left:auto;margin-right:auto;max-width:40rem;}
 input.upload { width:100%; }
 input.slider { height:15px;border-radius:5px;width:100%; }
@@ -48,7 +48,7 @@ input.slider { height:15px;border-radius:5px;width:100%; }
 % end
 <form action="{{ pre }}/aquatint" method="post" enctype="multipart/form-data" accept-charset="utf-8">
 <p>
-<label for="file">Select image file to upload (limited to 2MB)</label>
+<label for="file">Select image file to upload (limit 3MB)</label>
 <input class="upload" type="file" id="file" name="file">
 </p>
 <p>
@@ -72,19 +72,24 @@ id="sweeps" name="sweeps" oninput="sweepsValue.value=sweeps.value">
 </form>
 % if im != "":
 <p>Right-click or control-click to save images.</p>
-<p>Aquatint image {{ aq }}.</p>
+<h3>Aquatint image: {{ aq }}</h3>
 <img alt="aquatint image" src="aquatint/images/{{ aq }}"><br>
-<p>Threshold image {{ bw }}.</p>
+<h3>Threshold image: {{ bw }}</h3>
 <img alt="threshold image" src="aquatint/images/{{ bw }}"><br>
-<p>Input image {{ im }}.</p>
+<h3>Input image: {{ im }}</h3>
 <img alt="input image" src="aquatint/images/{{ im }}"><br>
+<h3>Description</h3>
 % end
 <p>
-This form applies an aquatint effect to an uploaded image using the Ising method
+This web app applies an aquatint effect to an uploaded image using the Ising method
 of <a href="https://physics.uiowa.edu/people/yannick-meurice">Prof Yannick Meurice</a>
 described in <a href="https://doi.org/10.1119/10.0006525">"Making digital aquatint with
 the Ising model"</a>, and is inspired by the work of <a href=
 "https://alanmckay.blog/projects/aquatint/">Alan McKay</a>.
+</p>
+<hr>
+<p>
+<a href="https://ljg.spacephysics.org/">Larry Granroth</a>
 </p>
 </main>
 </body>
