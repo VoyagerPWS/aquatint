@@ -41,7 +41,7 @@ WSGIScriptAlias /aquatint /some/place/wsgi/bottle_apps.py
 The name "aquatint" can be changed, as can "/some/place/wsgi", plus the exact location of the directives is flexible as well.  Due to a policy of backwards compatibility in the Bottle Framework, the long sequence of timeout specifications is strongly encouraged, but is adjustable as well.
 
 ## Tips in lieu of a build system
-Read the [Bottle Framework Tutorial](https://bottlepy.org/docs/dev/tutorial.html), it's short and *sweet*.
+Read the [Bottle Framework Tutorial](https://bottlepy.org/docs/dev/tutorial.html); it's short and *sweet*.
 
 Read through the `aquatint.c` source for instructions on compiling.
 
