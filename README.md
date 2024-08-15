@@ -11,8 +11,10 @@ Thanks go to the maintainers of [stb image library](https://github.com/nothings/
 
 The web app utilizes the [bottle framework](https://bottlepy.org/docs/dev/tutorial.html), which is extremely lightweight and simple.  This is a dependency, either running on a server utilizing Apache with [mod_wsgi](https://modwsgi.readthedocs.io/en/master/) or the bottle built-in single-threaded server for development and demonstrations.
 
+A version of this app is accessible at [my web server](https://ljg.spacephysics.org/app/aquatint).
+
 ## Apache configuration
-Install the Apache mod_wsgi:
+Install Apache `mod_wsgi`:
 ```
 dnf -y install mod_wsgi
 ```
@@ -37,5 +39,14 @@ WSGIProcessGroup aquatint
 WSGIScriptAlias /aquatint /some/place/wsgi/bottle_apps.py
 ```
 The name "aquatint" can be changed, as can "/some/place/wsgi", plus the exact location of the directives is flexible as well.  Due to a policy of backwards compatibility in the Bottle Framework, the long sequence of timeout specifications is strongly encouraged, but is adjustable as well.
+
+## Tips in lieu of a build system
+Read the [Bottle Framework Tutorial](https://bottlepy.org/docs/dev/tutorial.html), it's short and *sweet*.
+
+Read through the `aquatint.c` source for instructions on compiling.
+
+Read through the `wsgi/bottle_apps.py` source for configuration details to adjust, such as the location of the compiled aquatint binary.
+
+Read through the `wsgi/views/aquatint.tpl` template file for configuration details, such as the prefix for the Bottle app.
 
 [Larry Granroth](https://ljg.spacephysics.org)
