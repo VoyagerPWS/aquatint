@@ -20,7 +20,7 @@ import sys
 
 from bottle import route, request, template, static_file
 
-# writable space for files
+# global writable space for files
 scratch = "/space/tmp/uploads"
 
 @route('/hello')
@@ -101,7 +101,6 @@ def aquatintProc():
             aq = os.path.splitext(aq_inImage)[0]+"-aq.png"
             bw = os.path.splitext(aq_inImage)[0]+"-bw.png"
 
-    
     if aq_inImage == "":
         bw = ""
         aq = ""
