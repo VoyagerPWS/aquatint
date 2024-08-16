@@ -85,25 +85,20 @@ def aquatintProc():
         t = 5.0
         s = 3
 
-    # process the file using compiled program
+    # process the file using compiled program aq_Proc
     if aq_inImage != "":
         cmd = "{0} {1} {2} {3} {4}".format(aq_Proc, aq_inImage, g, t, s)
         #print("cmd: {0}".format(cmd), file=sys.stderr)
         os.chdir(aq_savePath)
-        p = subprocess.run(
-            cmd,
-            shell = True,
-            stdout = subprocess.PIPE,
-            stderr = subprocess.PIPE,
-            universal_newlines = True,
-            encoding='utf-8'
-            )
+        p = subprocess.run(cmd, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE,
+            universal_newlines = True, encoding='utf-8')
         os.chdir(os.path.dirname(__file__))
-        if p.returncode:
+        if p.returncode: # the subprocess returned a non-zero status
             e = p.stderr
+            i = e.find(': ') # tidy up "name:  ERROR" type messages
+            if i > -1:
+                e = e[i+2:].strip()
             aq_inImage = ""
-            aq = ""
-            bw = ""
         else:
             aq = os.path.splitext(aq_inImage)[0]+"-aq.png"
             bw = os.path.splitext(aq_inImage)[0]+"-bw.png"
