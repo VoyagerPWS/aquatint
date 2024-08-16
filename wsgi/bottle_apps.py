@@ -23,9 +23,9 @@ from bottle import route, request, template, static_file
 # writable space for files
 scratch = "/space/tmp/uploads"
 
-# trivial test target http://localhost:8080/hello
 @route('/hello')
 def hello():
+    '''Trivial test target http://localhost:8080/hello'''
     return "Hello from bottle number 1!"
 
 # aquatint things
@@ -38,6 +38,7 @@ aq_Proc = "/space/support/ljg/bin/aquatint"
 
 @route('/aquatint', method='POST')
 def aquatintProc():
+    '''Process form data and display results.'''
     e = ""  # error string
     aq = "" # aquatint image
     bw = "" # threshold image
@@ -116,12 +117,14 @@ def aquatintProc():
 
 @route('/aquatint', method='GET')
 def aquatintForm():
+    '''Display default initial form.'''
     global aq_inImage, aq_savePath, aq_Proc
     return template('aquatint', im="", bw="", aq="", g="0.5", t="5", s="3", e="")
 
 
 @route('/aquatint/images/<filename>')
 def aquatintImage(filename):
+    '''Fetch input and output images.'''
     global aq_inImage, aq_savePath, aq_Proc
     #print("fetching aq_savePath/filename {0}/{1}".format(aq_savePath,filename), file=sys.stderr)
     return static_file(filename, root=aq_savePath)
