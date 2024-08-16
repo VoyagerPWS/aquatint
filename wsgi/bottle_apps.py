@@ -1,21 +1,19 @@
 #!/usr/bin/python3
 # for local development, just "python3 bottle_apps.py"
 
-# setup to run with apache mod_wsgi
+#### setup to run with apache mod_wsgi ####
 
 import os
 os.chdir(os.path.dirname(__file__))
 
 import bottle
 application = bottle.default_app()
-bottle.debug(True)
+#bottle.debug(True)
 
 # needed to run external programs
-
 import subprocess
 
 # debugging to stderr
-
 import sys
 
 #### general bottle framework from here on ####
@@ -33,7 +31,6 @@ def hello():
 # aquatint things
 # be sure to set valid scratch variable above and aq_Proc below
 # the following variables are global
-
 aq_inImage = ""
 aq_savePath = "/dev/null"
 aq_Proc = "/space/support/ljg/bin/aquatint"
@@ -88,7 +85,7 @@ def aquatintProc():
     # process the file using compiled program aq_Proc
     if aq_inImage != "":
         cmd = "{0} {1} {2} {3} {4}".format(aq_Proc, aq_inImage, g, t, s)
-        #print("cmd: {0}".format(cmd), file=sys.stderr)
+        #print("subprocess.run {0}".format(cmd), file=sys.stderr)
         os.chdir(aq_savePath)
         p = subprocess.run(cmd, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE,
             universal_newlines = True, encoding='utf-8')
@@ -103,7 +100,7 @@ def aquatintProc():
             aq = os.path.splitext(aq_inImage)[0]+"-aq.png"
             bw = os.path.splitext(aq_inImage)[0]+"-bw.png"
 
-    #print("aq_savePath aq_inImage bw aq: {0} {1} {2} {3}".format(aq_savePath,aq_inImage,bw,aq), file=sys.stderr)
+    
     if aq_inImage == "":
         bw = ""
         aq = ""
@@ -113,6 +110,7 @@ def aquatintProc():
         if e == "":
             e  = "Processing has timed out.  You will have to begin again."
 
+    #print("template aquatint im={0} bw={1} aq={2} g={3} t={4} s={5} e={6}".format(im, bw, aq, g, t, s, e), file=sys.stderr)
     return template('aquatint', im=aq_inImage, bw=bw, aq=aq, g=g, t=t, s=s, e=e)
 
 
@@ -133,5 +131,4 @@ def aquatintImage(filename):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
     bottle.run(host='localhost', port=port, debug=True)
-
 
