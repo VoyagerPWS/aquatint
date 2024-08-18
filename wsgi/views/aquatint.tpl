@@ -5,7 +5,7 @@ The values in double curly braces are Python variables.  Lines beginning with pe
 Python statements.  The following variable, pre, is set to the base of the wsgi bottle main
 application file.  Running under Apache mod_wsgi, this will almost certainly be non-blank.
 % end
-% pre = "/app" # in Apache mod_wsgi environment
+% pre = "" # in Apache mod_wsgi environment
 <!-- % pre = "" # in bottle development environment -->
 <HTML lang="en-us">
 <HEAD>
