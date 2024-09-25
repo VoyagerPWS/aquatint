@@ -11,7 +11,9 @@ Thanks go to the maintainers of [stb image library](https://github.com/nothings/
 
 The web app utilizes the [Bottle Framework](https://bottlepy.org/docs/dev/tutorial.html), which is extremely lightweight and simple.  This is a dependency, either running on a server utilizing Apache with [mod_wsgi](https://modwsgi.readthedocs.io/en/master/) or the Bottle built-in single-threaded server for development and demonstrations.
 
-A live version of this app is accessible at [my web server](https://ljg.spacephysics.org/app/aquatint).
+A live version of this app is accessible at [the UIowa physics app server](https://apps.physics.uiowa.edu/aquatint).
+
+(This repository and document is a bit stale.  It should be updated to conform to the tweaks made for the UIowa application.)
 
 ## Apache configuration
 Install Apache `mod_wsgi`:
